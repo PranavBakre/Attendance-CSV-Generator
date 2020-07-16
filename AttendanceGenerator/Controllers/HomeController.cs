@@ -29,24 +29,35 @@ namespace AttendanceGenerator.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Index(string panel, IFormFile file, TimeSpan endTime)
+        public IActionResult Index(string panel, IFormFile file, TimeSpan endTime, bool time)
         {
             _logger.LogInformation(panel + "\t" + file.FileName + "\t" + file.ContentType);
 
-            var attendance = GenerateAttendanceRecord(panel, file, endTime);
+            var attendance = GenerateAttendanceRecord(panel, file, endTime,time);
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
-            writer.WriteLine($"PRN,Name,Time attended");
+            writer.Write($"PRN,Name");
+            if (time)
+            {
+                writer.Write(",Time attended");
+            }
+            writer.WriteLine();
             foreach (var x in attendance.OrderBy(x => x.PRN))
             {
-                writer.WriteLine($"{x.PRN},\"{x.Name}\",{x.Time}");
+                writer.Write($"{x.PRN},\"{x.Name}\"");
+                if(time)
+                {
+                    writer.Write($",{ x.Time}");
+                }
+                writer.WriteLine();
             }
+            writer.Flush();
             stream.Position = 0;
-            return File(stream, "application/vnd.ms-excel", "Attendance.csv");
+            return File(stream, "text/csv", "Attendance.csv");
         }
 
         [NonAction]
-        public IEnumerable<Attendance> GenerateAttendanceRecord(string panel, IFormFile file, TimeSpan endTime)
+        public IEnumerable<Attendance> GenerateAttendanceRecord(string panel, IFormFile file, TimeSpan endTime, bool time)
         {
             var meeting = ReadMeetingAttendanceRecord(file.OpenReadStream());
             var panelList = ReadClassRecord(panel);
@@ -56,7 +67,6 @@ namespace AttendanceGenerator.Controllers
             {
                 if (attendance.Where(x => entry.Name.Contains(x.Name)).Count() == 0)
                 {
-                    _logger.LogInformation($"{panelList.Count()}");
                     attendance.Add(new Attendance
                     {
                         Name = entry.Name,
@@ -64,17 +74,20 @@ namespace AttendanceGenerator.Controllers
                         Time = TimeSpan.Zero
                     });
                 }
-
-                if (entry.Action.Contains("Joined"))
+                if (time)
                 {
-                    attendance.Where(x => entry.Name.Contains(x.Name)).First().Time -= entry.TimeStamp.TimeOfDay;
+                    if (entry.Action.Contains("Joined"))
+                    {
+                        attendance.Where(x => entry.Name.Contains(x.Name)).First().Time -= entry.TimeStamp.TimeOfDay;
+                    }
+                    else
+                    {
+                        attendance.Where(x => entry.Name.Contains(x.Name)).First().Time += entry.TimeStamp.TimeOfDay;
+                    }
                 }
-                else
-                {
-                    attendance.Where(x => entry.Name.Contains(x.Name)).First().Time += entry.TimeStamp.TimeOfDay;
-                }
-
             }
+            if (time)
+            { 
             foreach (var x in attendance)
             {
                 if (x.Time.CompareTo(TimeSpan.Zero) < 0)
@@ -82,7 +95,7 @@ namespace AttendanceGenerator.Controllers
                     x.Time = x.Time.Add(endTime);
                 }
             }
-
+            }
             return attendance;
 
         }
@@ -107,10 +120,7 @@ namespace AttendanceGenerator.Controllers
 
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+ 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
