@@ -1,31 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Attendance Generator";
 }
-<div class="container">
-    <div class="row mt-5 justify-content-center">
-        <div class="card col-10 col-sm-9 col-md-6 col-xl-4">
-            <div class="card-header bg-primary">
+    <div class="row justify-content-center align-content-center" style="min-height: 80vh;">
+        <div class="card col-10 col-sm-9 col-md-6 col-xl-4 border-dark px-0">
+            <div class="card-header" style="background-color:burlywood">
                 <h4 class="text-center text-white">Attendance Generator</h4>
             </div>
             <form class="card-body" method="post" enctype="multipart/form-data">
                 <div class="form-group form-row">
-                    <label for="panel" class="col-12">Select Panel</label>
+                    <label for="panel" class="col-12 ">Select Panel</label>
                     <select id="panel" class="form-control" name="panel" required>
                         <option value="Panel2">Panel 2</option>
                     </select>
                 </div>
                 <div class="form-group form-row">
-                    <label for="endTime" class="col-6">End Time</label>
-                    <input class="col-6" type="time" id="endTime" name="EndTime" required />
+                    <label for="endTime" class="col-6 my-0 align-self-center">Meeting End Time</label>
+                    <input class="col-6 form-control" type="time" id="endTime" name="EndTime" required />
                 </div>
                 <div class="form-group form-row">
-                    <div class="form-check">
+                    <label for="file" class="col-8 ">Meeting CSV</label>
+                    <div class="form-check col-4">
                         <input id="time" class="form-check-input" type="checkbox" name="time" value="true" />
                         <label for="time" class="form-check-label">Include Time</label>
                     </div>
-                </div>
-                <div class="form-group form-row">
-                    <input class="form-control-file" name="file" type="file" required />
+                    <div class="custom-file">
+                        <input class=" custom-file-input col-12" id="file" name="file" type="file" required />
+                        <label class="custom-file-label" for="file">Choose file...</label>
+                    </div>
                 </div>
                 <div class="row justify-content-center">
                     <button class="btn btn-primary" type="submit">Submit</button>
@@ -33,4 +34,3 @@
             </form>          
         </div>
     </div>
-</div>
