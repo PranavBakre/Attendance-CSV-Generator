@@ -36,7 +36,7 @@ namespace AttendanceGenerator.Controllers
             var attendance = GenerateAttendanceRecord(panel, file, endTime,time);
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
-            writer.Write($"PRN,Name");
+            writer.Write($"Roll No,Name,PRN");
             if (time)
             {
                 writer.Write(",Time attended");
@@ -44,10 +44,11 @@ namespace AttendanceGenerator.Controllers
             writer.WriteLine();
             foreach (var x in attendance.OrderBy(x => x.PRN))
             {
-                writer.Write($"{x.PRN},\"{x.Name}\"");
+                writer.Write($"{x.RollNo},\"{x.Name}\",{x.PRN}");
                 if(time)
                 {
-                    writer.Write($",{ x.Time}");
+                    var multiplejoins = (x.UnbalancedJoins > 0 ? ",Multiple Joins detected" : "");
+                    writer.Write($",{ x.Time}"+ multiplejoins);
                 }
                 writer.WriteLine();
             }
@@ -65,24 +66,32 @@ namespace AttendanceGenerator.Controllers
             var attendance = new List<Attendance>();
             foreach (var entry in meeting)
             {
-                if (attendance.Where(x => entry.Name.Contains(x.Name)).Count() == 0)
+                var attendee = attendance.Where(x => entry.Name.Contains(x.Name));
+                if (attendee.Count() == 0)
                 {
+                    var panelEntry = panelList.Where(x => entry.Name.Contains(x.Name, StringComparison.OrdinalIgnoreCase));
                     attendance.Add(new Attendance
                     {
                         Name = entry.Name,
-                        PRN = panelList.Where(x => entry.Name.Contains(x.Name, StringComparison.OrdinalIgnoreCase)).Select(x => x.PRN).FirstOrDefault(),
-                        Time = TimeSpan.Zero
+                        RollNo = panelEntry.Select(x => x.RollNo).FirstOrDefault(),
+                        PRN = panelEntry.Select(x => x.PRN).FirstOrDefault(),
+                        Time = TimeSpan.Zero,
+                        UnbalancedJoins = 0
                     });
                 }
                 if (time)
                 {
                     if (entry.Action.Contains("Joined"))
                     {
-                        attendance.Where(x => entry.Name.Contains(x.Name)).First().Time -= entry.TimeStamp.TimeOfDay;
+                        attendee.First().Time -= entry.TimeStamp.TimeOfDay;
+                        if (attendee.First().PreviousAction=="Joined")
+                            attendee.First().UnbalancedJoins= attendee.First().UnbalancedJoins+1;
+                        attendee.First().PreviousAction = "Joined";
                     }
                     else
                     {
-                        attendance.Where(x => entry.Name.Contains(x.Name)).First().Time += entry.TimeStamp.TimeOfDay;
+                        attendee.First().Time += entry.TimeStamp.TimeOfDay;
+                        attendee.First().PreviousAction="Left";
                     }
                 }
             }

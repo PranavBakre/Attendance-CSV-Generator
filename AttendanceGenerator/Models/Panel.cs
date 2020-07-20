@@ -6,5 +6,7 @@
         public string PRN { get; set; }
         [CsvHelper.Configuration.Attributes.NameIndex(1)]
         public string Name { get; set; }
+        [CsvHelper.Configuration.Attributes.NameIndex(2)]
+        public string RollNo { get; set; }
     }
 }
