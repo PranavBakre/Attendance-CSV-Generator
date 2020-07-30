@@ -48,7 +48,7 @@ namespace AttendanceGenerator.Controllers
                 if(time)
                 {
                     var multiplejoins = (x.UnbalancedJoins > 0 ? ",Multiple Joins detected" : "");
-                    writer.Write($",{ x.Time}"+ multiplejoins);
+                    writer.Write($",{ x.Time}{multiplejoins}");
                 }
                 writer.WriteLine();
             }

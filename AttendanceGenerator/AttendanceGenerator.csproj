@@ -18,4 +18,13 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\Panels\Panel1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Panels\TYCSEPanel1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
