@@ -87,7 +87,7 @@ namespace AttendanceGenerator.Controllers
                             attendee.UnbalancedJoins++;
                         else
                         {
-                            attendee.JoinTime = entry.TimeStamp.TimeOfDay;
+                            attendee.JoinTime = entry.TimeStamp.TimeOfDay - attendee.Time;
                         }
                         attendee.PreviousAction = "Joined";
                     }
@@ -97,7 +97,8 @@ namespace AttendanceGenerator.Controllers
                         {
                             attendee.UnbalancedJoins--;
                         }
-                        attendee.LeaveTime = entry.TimeStamp.TimeOfDay;
+
+                        attendee.LeaveTime= entry.TimeStamp.TimeOfDay;
                         attendee.PreviousAction="Left";
                     }
                 }
