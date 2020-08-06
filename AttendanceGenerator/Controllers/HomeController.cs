@@ -130,7 +130,7 @@ namespace AttendanceGenerator.Controllers
         [NonAction]
         public IEnumerable<Panel> ReadClassRecord(string panel)
         {
-            var streamReader = new StreamReader($"{_env.WebRootPath}/Panels/{panel}.csv");
+            var streamReader = new StreamReader($"{_env.ContentRootPath}/Data/Panels/{panel}.csv");
             var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             reader.Configuration.HasHeaderRecord = false;
             return reader.GetRecords<Panel>().ToList();

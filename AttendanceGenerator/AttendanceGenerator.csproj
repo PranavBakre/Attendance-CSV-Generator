@@ -11,20 +11,16 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.5" />
   </ItemGroup>
-
   <ItemGroup>
-    <None Include="wwwroot\Panels\Panel2.csv">
+    <None Update="Data\Panels\Panel1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\Panels\Panel1.csv">
+    <None Update="Data\Panels\Panel2.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\Panels\TYCSEPanel1.csv">
+    </None>
+    <None Update="Data\Panels\TYCSEPanel1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
 
 </Project>
