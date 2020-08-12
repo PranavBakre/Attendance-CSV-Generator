@@ -1,0 +1,30 @@
+﻿<Application
+    x:Class="UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWP">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <AcrylicBrush x:Key="Transparency" BackgroundSource="HostBackdrop"
+                                  TintColor="Black" TintOpacity="0" FallbackColor="DarkGray"
+                                  ></AcrylicBrush>
+                    <SolidColorBrush x:Key="Text" Color="White"></SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <AcrylicBrush x:Key="Transparency" BackgroundSource="HostBackdrop"
+                                  TintColor="Black" TintOpacity="0.8" FallbackColor="DarkGray"
+                                 ></AcrylicBrush>
+                    <SolidColorBrush x:Key="Text" Color="White"></SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <AcrylicBrush x:Key="Transparency" BackgroundSource="HostBackdrop"
+                                 TintColor="White" TintOpacity="0" FallbackColor="GhostWhite"
+                                  ></AcrylicBrush>
+                    <SolidColorBrush x:Key="Text" Color="Black"></SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
