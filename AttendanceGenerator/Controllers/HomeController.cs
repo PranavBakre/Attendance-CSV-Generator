@@ -33,7 +33,7 @@ namespace AttendanceGenerator.Controllers
         {
             _logger.LogInformation(panel + "\t" + file.FileName + "\t" + file.ContentType);
 
-            var attendance = GenerateAttendanceRecord(panel, file, endTime,time);
+            var attendance = GenerateAttendanceRecord(panel, file, endTime, time);
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
             writer.Write($"Roll No,Name,PRN");
@@ -45,7 +45,7 @@ namespace AttendanceGenerator.Controllers
             foreach (var x in attendance.OrderBy(x => x.PRN))
             {
                 writer.Write($"{x.RollNo},\"{x.Name}\",{x.PRN}");
-                if(time)
+                if (time)
                 {
                     writer.Write($",{ x.Time}");
                 }
@@ -66,14 +66,14 @@ namespace AttendanceGenerator.Controllers
             foreach (var entry in meeting)
             {
                 var attendee = attendance.Where(x => entry.Name.Contains(x.Name)).FirstOrDefault();
-                if (attendee== null)
+                if (attendee == null)
                 {
                     var panelEntry = panelList.Where(x => entry.Name.Contains(x.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                     attendance.Add(new Attendance
                     {
                         Name = entry.Name,
-                        RollNo = panelEntry != null ? panelEntry.RollNo:"",
-                        PRN = panelEntry!=null? panelEntry.PRN:"",
+                        RollNo = panelEntry != null ? panelEntry.RollNo : "",
+                        PRN = panelEntry != null ? panelEntry.PRN : "",
                         UnbalancedJoins = 0
                     });
                 }
@@ -82,8 +82,8 @@ namespace AttendanceGenerator.Controllers
                 {
                     if (entry.Action.Contains("Joined"))
                     {
-                        
-                        if (attendee.PreviousAction=="Joined")
+
+                        if (attendee.PreviousAction == "Joined")
                             attendee.UnbalancedJoins++;
                         else
                         {
@@ -98,20 +98,20 @@ namespace AttendanceGenerator.Controllers
                             attendee.UnbalancedJoins--;
                         }
 
-                        attendee.LeaveTime= entry.TimeStamp.TimeOfDay;
-                        attendee.PreviousAction="Left";
+                        attendee.LeaveTime = entry.TimeStamp.TimeOfDay;
+                        attendee.PreviousAction = "Left";
                     }
                 }
             }
             if (time)
-            { 
-            foreach (var x in attendance)
             {
-                if (x.PreviousAction=="Joined" || x.UnbalancedJoins!=0)
+                foreach (var x in attendance)
                 {
-                    x.LeaveTime = endTime;
+                    if (x.PreviousAction == "Joined" || x.UnbalancedJoins != 0)
+                    {
+                        x.LeaveTime = endTime;
+                    }
                 }
-            }
             }
             return attendance;
 
@@ -137,7 +137,7 @@ namespace AttendanceGenerator.Controllers
 
         }
 
- 
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
