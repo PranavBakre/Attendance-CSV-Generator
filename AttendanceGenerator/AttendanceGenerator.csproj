@@ -12,10 +12,19 @@
     <PackageReference Include="CsvHelper" Version="15.0.5" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Data\Panels\FinalYearAllPanels.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\Panels\IMLA.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Data\Panels\Panel1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Data\Panels\Panel2.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\Panels\Panel3.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Data\Panels\TYCSEPanel1.csv">
