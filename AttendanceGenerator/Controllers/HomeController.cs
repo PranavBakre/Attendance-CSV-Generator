@@ -68,7 +68,7 @@ namespace AttendanceGenerator.Controllers
                 var attendee = attendance.Where(x => entry.Name.Contains(x.Name)).FirstOrDefault();
                 if (attendee == null)
                 {
-                    var panelEntry = panelList.Where(x => entry.Name.Contains(x.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                    var panelEntry = panelList.Where(x => entry.Name.Replace(" ",string.Empty).Contains(x.Name.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                     attendance.Add(new Attendance
                     {
                         Name = entry.Name,
