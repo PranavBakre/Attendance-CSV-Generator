@@ -42,7 +42,7 @@ namespace AttendanceGenerator.Controllers
                 writer.Write(",Time attended");
             }
             writer.WriteLine();
-            foreach (var x in attendance.OrderBy(x => x.PRN))
+            foreach (var x in attendance.OrderBy(x => x.RollNo))
             {
                 writer.Write($"{x.RollNo},\"{x.Name}\",{x.PRN}");
                 if (time)
