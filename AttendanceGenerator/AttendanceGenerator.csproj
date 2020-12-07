@@ -34,6 +34,9 @@
     <None Update="Data\Panels\TYCSEPanel1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Data\Panels\UIUXD-T11-Panel1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Update="electron.manifest.json">
