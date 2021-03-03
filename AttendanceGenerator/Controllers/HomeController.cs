@@ -42,7 +42,7 @@ namespace AttendanceGenerator.Controllers
                 writer.Write(",Time attended");
             }
             writer.WriteLine();
-            foreach (var x in attendance.OrderBy(x => x.RollNo))
+            foreach (var x in attendance.OrderBy(x => x.PRN))
             {
                 writer.Write($"{x.RollNo},\"{x.Name}\",{x.PRN}");
                 if (time)
@@ -123,6 +123,9 @@ namespace AttendanceGenerator.Controllers
             var streamReader = new StreamReader(stream);
             var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             reader.Configuration.Delimiter = "\t";
+            reader.Configuration.MissingFieldFound=null;
+            reader.Configuration.HeaderValidated=null;
+            
             return reader.GetRecords<MeetingAttendance>();
 
         }
@@ -133,6 +136,7 @@ namespace AttendanceGenerator.Controllers
             var streamReader = new StreamReader($"{_env.ContentRootPath}/Data/Panels/{panel}.csv");
             var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             reader.Configuration.HasHeaderRecord = false;
+            reader.Configuration.MissingFieldFound=null;
             return reader.GetRecords<Panel>().ToList();
 
         }
