@@ -42,7 +42,7 @@ namespace AttendanceGenerator.Controllers
                 writer.Write(",Time attended");
             }
             writer.WriteLine();
-            foreach (var x in attendance.OrderBy(x => x.PRN))
+            foreach (var x in attendance.OrderBy(x => x.RollNo))
             {
                 writer.Write($"{x.RollNo},\"{x.Name}\",{x.PRN}");
                 if (time)
@@ -68,7 +68,7 @@ namespace AttendanceGenerator.Controllers
                 var attendee = attendance.Where(x => entry.Name.Contains(x.Name)).FirstOrDefault();
                 if (attendee == null)
                 {
-                    var panelEntry = panelList.Where(x => entry.Name.Replace(" ",string.Empty).Contains(x.Name.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                    var panelEntry = panelList.Where(x => entry.Name.Replace(" ", string.Empty).Contains(x.Name.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                     attendance.Add(new Attendance
                     {
                         Name = entry.Name,
@@ -123,9 +123,9 @@ namespace AttendanceGenerator.Controllers
             var streamReader = new StreamReader(stream);
             var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             reader.Configuration.Delimiter = "\t";
-            reader.Configuration.MissingFieldFound=null;
-            reader.Configuration.HeaderValidated=null;
-            
+            reader.Configuration.MissingFieldFound = null;
+            reader.Configuration.HeaderValidated = null;
+
             return reader.GetRecords<MeetingAttendance>();
 
         }
@@ -136,7 +136,7 @@ namespace AttendanceGenerator.Controllers
             var streamReader = new StreamReader($"{_env.ContentRootPath}/Data/Panels/{panel}.csv");
             var reader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
             reader.Configuration.HasHeaderRecord = false;
-            reader.Configuration.MissingFieldFound=null;
+            reader.Configuration.MissingFieldFound = null;
             return reader.GetRecords<Panel>().ToList();
 
         }
